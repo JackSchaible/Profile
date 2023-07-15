@@ -1,0 +1,15 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+div.bg {
+  background-image: url("/assets/images/Banner.jpg");
+}
+
+mat-card {
+  img {
+    width: 200px;
+    border-radius: 50%;
+    margin-top: -125px;
+  }
+}
