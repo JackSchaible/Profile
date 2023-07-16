@@ -4,11 +4,35 @@
 @tailwind components;
 @tailwind utilities;
 
+$body-font: adelle, serif;
+$header-font: futura-pt, brandon-grotesque, sans-serif;
+
 html,
 body {
   height: 100%;
+  background-color: #ccc;
 }
+
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: $body-font;
+}
+
+p {
+  font-family: $body-font;
+  color: #111214;
+}
+
+hr {
+  background-color: #ccc;
+  height: 2px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $header-font;
 }

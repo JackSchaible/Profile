@@ -1,36 +1,57 @@
-<mat-toolbar color="primary">
-  <span>
-    <a routerLink="/">
-      <i aria-hidden="false" aria-label="Home icon" class="fa-solid fa-home"></i>
-      <span class="ml-2 inline">Jack Schaible's Profile</span>
-    </a>
-  </span>
-
-  <span class="spacer"></span>
-
-  <a href="https://github.com/JackSchaible/Profile" target="_blank" rel="noreferrer" class="mx-2">
-    <i aria-hidden="false" aria-label="GitHub icon" class="fa-brands fa-github"></i>
+<nav class="fixed flex flex-col">
+  <a href="https://github.com/JackSchaible/Profile" target="_blank" rel="noreferrer" class="m-2 text-white">
+    <i aria-hidden="false" aria-label="GitHub icon" class="fa-brands fa-github fa-3x"></i>
   </a>
 
-  <a href="https://www.linkedin.com/in/jack-schaible-352a1631/" target="_blank" rel="noreferrer" class="ml-2">
-    <i aria-hidden="false" aria-label="LinkedIn icon" class="fa-brands fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jack-schaible-352a1631/" target="_blank" rel="noreferrer" class="m-2 text-white">
+    <i aria-hidden="false" aria-label="LinkedIn icon" class="fa-brands fa-linkedin fa-3x"></i>
   </a>
-</mat-toolbar>
+
+  <a
+    href="mailto:jack.schaible@hotmail.com?subject=Hello, Jack!&body=I saw your profile site and wanted to say hi!"
+    target="_blank"
+    rel="noreferrer"
+    class="m-2 text-white"
+  >
+    <i aria-hidden="false" aria-label="Email icon" class="fa-solid fa-envelope fa-3x"></i>
+  </a>
+</nav>
 
 <div class="bg bg-no-repeat bg-cover bg-center pt-96"></div>
 <main>
-  <mat-card class="mx-auto w-6/12">
+  <mat-card class="mx-auto lg:w-6/12 md:w-8/12 sm:w-8/12">
     <img src="assets/images/Profile.jpg" alt="Jack Schaible" class="ring-4 ring-sky-300 rounded-circle mx-auto" />
-    <p class="text-center text-4xl mt-5">Jack Schaible, Software Developer</p>
-    <p class="text-center mx-6 my-3">
+
+    <section>
+      <h1 class="text-center text-4xl mt-5">Jack Schaible</h1>
+      <hr class="mx-6" />
+      <h2 class="text-center text-2xl">Software Developer</h2>
+    </section>
+  </mat-card>
+
+  <mat-card class="mx-auto lg:w-6/12 md:w-8/12 sm:w-8/12 my-8">
+    <p class="text-center mx-6 my-3 fo">
       Hello there! I'm Jack, a seasoned Software Developer with {{ yearsOfExperience }} years of experience coding in
-      diverse industries, from energy to automotive, sales support, and even film production. I'm skilled in various
-      programming languages and technologies, such as C#, TypeScript, React, and SQL, with a background in AWS and
-      containerization. My career highlight includes building comprehensive web applications for Laika that interfaced
-      with ShotGrid, streamlining film production workflows and boosting operational efficiency. But my passion doesn't
-      stop at coding - I'm an avid gamer, and I even lead weekly D&D games. In this digital realm, I blend technical
-      proficiency with creativity to develop robust, effective software solutions. So, whether you're here for
-      professional reasons or just to geek out over games, welcome!
+      diverse industries, from energy to automotive, sales support, and film production.
+    </p>
+    <p class="text-center mx-6 my-3">
+      I'm skilled in various programming languages and technologies, such as C#, TypeScript, React, and SQL, with a
+      background in AWS and containerization.
+    </p>
+    <p class="text-center mx-6 my-3">
+      My career highlight includes building comprehensive web applications for Laika that interfaced with ShotGrid,
+      streamlining film production workflows and boosting operational efficiency.
+    </p>
+    <p class="text-center mx-6 my-3">
+      But my passion doesn't stop at coding - I'm an avid gamer, and I lead a weekly D&D game. I'm also working on a
+      video game project in Unity on the side. In this digital realm, I blend technical proficiency with creativity to
+      develop robust, effective software solutions. There's more content below. So, whether you're here for professional
+      reasons or just to geek out over games, welcome.
     </p>
   </mat-card>
 </main>
+
+<mat-toolbar class="mt-20">
+  <span class="spacer"></span>
+  <span>©{{ currentYear }} Cactus Studios</span>
+</mat-toolbar>

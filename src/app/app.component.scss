@@ -2,14 +2,40 @@
   flex: 1 1 auto;
 }
 
+nav {
+  top: 50%;
+  transform: translate(0, -50%);
+  z-index: 1;
+  background-color: #000;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 div.bg {
-  background-image: url("/assets/images/Banner.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0) 0%, #ccc) 100%, url("/assets/images/Banner.jpg");
+  //background-image: url("/assets/images/Banner.jpg");
+  min-height: 30vw;
 }
 
 mat-card {
+  background-color: #e6e6e6;
   img {
     width: 200px;
+    min-width: 200px;
     border-radius: 50%;
     margin-top: -125px;
   }
+
+  &:first-child {
+    min-height: 250px;
+
+    section {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+    }
+  }
+
+  border-radius: 50px;
 }
