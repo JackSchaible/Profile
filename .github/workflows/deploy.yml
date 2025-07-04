@@ -1,0 +1,30 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write # Needed to push to the `gh-pages` branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Change to App directory
+        run: cd App && npm ci
+
+      - name: Build app
+        run: cd App && npm run build
+
+      - name: Deploy to GitHub Pages
+        run: cd App && npm run deploy
