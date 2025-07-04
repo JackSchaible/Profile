@@ -28,11 +28,11 @@ jobs:
         working-directory: App
 
       - name: Install dependencies
-        run: cd App && npm install
+        run: npm install
         working-directory: App
 
       - name: Build app
-        run: cd App && npm run build
+        run: npm run build
         working-directory: App
 
       - name: Configure git user
