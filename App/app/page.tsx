@@ -26,7 +26,7 @@ export default function Home() {
         >
           <aside className="shrink-0" aria-label="Profile photo">
             <Image
-              src="/img/Jack-1.jpg"
+              src="/img/profile.jpg"
               alt="Profile photo"
               width={200}
               height={200}
