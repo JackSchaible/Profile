@@ -1,0 +1,98 @@
+/* Theme Color Variables */
+:root {
+  /* Light Theme Colors */
+  --color-bg-primary: #fff;
+  --color-bg-secondary: #f1f5f9;
+  --color-bg-card: #fff;
+  --color-bg-badge: #e5e7eb;
+  --color-bg-toggle: #e5e7eb;
+  --color-bg-toggle-slider: #fff;
+
+  --color-text-primary: #18181b;
+  --color-text-secondary: #52525b;
+  --color-text-muted: #71717a;
+  --color-text-badge: #18181b;
+  --color-text-toggle: #6b7280;
+
+  --color-border-primary: #e5e7eb;
+  --color-border-secondary: #f1f5f9;
+  --color-border-card: #f1f5f9;
+
+  /* Button Colors */
+  --color-linkedin: #2563eb;
+  --color-linkedin-hover: #1d4ed8;
+  --color-github: #18181b;
+  --color-github-hover: #09090b;
+  --color-resume: #16a34a;
+  --color-resume-hover: #15803d;
+  --color-button-text: #fff;
+
+  /* Shadow Colors */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  /* Gradients */
+  --gradient-bg: linear-gradient(to bottom right, #fff, #f1f5f9);
+}
+
+/* Dark Theme Colors */
+[data-theme="dark"] {
+  --color-bg-primary: #18181b;
+  --color-bg-secondary: #23272f;
+  --color-bg-card: #27272a;
+  --color-bg-badge: #3f3f46;
+  --color-bg-toggle: #374151;
+  --color-bg-toggle-slider: #fff;
+
+  --color-text-primary: #f4f4f5;
+  --color-text-secondary: #d4d4d8;
+  --color-text-muted: #71717a;
+  --color-text-badge: #f4f4f5;
+  --color-text-toggle: #d1d5db;
+
+  --color-border-primary: #3f3f46;
+  --color-border-secondary: #3f3f46;
+  --color-border-card: #3f3f46;
+
+  /* Button Colors (same in dark mode) */
+  --color-linkedin: #2563eb;
+  --color-linkedin-hover: #1d4ed8;
+  --color-github: #18181b;
+  --color-github-hover: #09090b;
+  --color-resume: #16a34a;
+  --color-resume-hover: #15803d;
+  --color-button-text: #fff;
+
+  /* Shadow Colors (same in dark mode) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  /* Gradients */
+  --gradient-bg: linear-gradient(to bottom right, #18181b, #23272f);
+}
+
+/* CSS class-based dark theme as fallback */
+.dark {
+  --color-bg-primary: #18181b;
+  --color-bg-secondary: #23272f;
+  --color-bg-card: #27272a;
+  --color-bg-badge: #3f3f46;
+  --color-bg-toggle: #374151;
+  --color-bg-toggle-slider: #fff;
+
+  --color-text-primary: #f4f4f5;
+  --color-text-secondary: #d4d4d8;
+  --color-text-muted: #71717a;
+  --color-text-badge: #f4f4f5;
+  --color-text-toggle: #d1d5db;
+
+  --color-border-primary: #3f3f46;
+  --color-border-secondary: #3f3f46;
+  --color-border-card: #3f3f46;
+
+  --gradient-bg: linear-gradient(to bottom right, #18181b, #23272f);
+}
