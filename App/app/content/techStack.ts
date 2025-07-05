@@ -1,39 +1,41 @@
+import { TechKey } from "./techData";
+
 const techStack = [
   {
     category: "Languages",
     items: [
-      { name: "TypeScript", img: "/img/lang/ts.svg" },
-      { name: "C#", img: "/img/lang/cs.svg" },
-      { name: "Python", img: "/img/lang/py.svg" },
-      { name: "Rust", img: "/img/lang/rs.svg" },
-      { name: "SASS", img: "/img/lang/sass.svg" },
+      TechKey.TYPESCRIPT,
+      TechKey.CSHARP,
+      TechKey.PYTHON,
+      TechKey.RUST,
+      TechKey.SASS,
     ],
   },
   {
     category: "Frameworks",
     items: [
-      { name: "React", img: "/img/fwork/react.svg" },
-      { name: "Angular", img: "/img/fwork/ng.svg" },
-      { name: "Next.js", img: "/img/fwork/next.svg" },
-      { name: "Node.js", img: "/img/fwork/nodejs.svg" },
-      { name: "Flask", img: "/img/fwork/flask.svg" },
-      { name: "Django", img: "/img/fwork/dj.svg" },
+      TechKey.REACT,
+      TechKey.ANGULAR,
+      TechKey.NEXTJS,
+      TechKey.NODEJS,
+      TechKey.FLASK,
+      TechKey.DJANGO,
     ],
   },
   {
     category: "Cloud",
     items: [
-      { name: "Azure", img: "/img/cloud/az.svg" },
-      { name: "AWS", img: "/img/cloud/aws.svg" },
+      TechKey.AZURE,
+      TechKey.AWS,
     ],
   },
   {
     category: "DevOps",
     items: [
-      { name: "Docker", img: "/img/devops/docker.svg" },
-      { name: "GitHub Actions", img: "/img/devops/gh.svg" },
-      { name: "Azure DevOps", img: "/img/devops/ado.svg" },
-      { name: "Kubernetes", img: "/img/devops/k8s.svg" },
+      TechKey.DOCKER,
+      TechKey.GITHUB_ACTIONS,
+      TechKey.AZURE_DEVOPS,
+      TechKey.KUBERNETES,
     ],
   },
 ];

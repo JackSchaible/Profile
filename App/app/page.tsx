@@ -13,6 +13,7 @@ import techStack from "./content/techStack";
 import projects from "./content/projects";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import TechPill from "./components/TechPill";
 
 export default function Home() {
   return (
@@ -96,19 +97,10 @@ export default function Home() {
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {group.items.map((item) => (
-                    <span
-                      key={item.name}
-                      className="inline-flex items-center gap-2 px-3 py-1 bg-badge text-badge rounded-full text-sm font-medium border border-badge"
-                    >
-                      <Image
-                        src={item.img}
-                        alt={item.name + " logo"}
-                        width={16}
-                        height={16}
-                        className="inline"
-                      />
-                      {item.name}
-                    </span>
+                    <TechPill
+                      key={item}
+                      tech={item}
+                    />
                   ))}
                 </div>
               </article>
