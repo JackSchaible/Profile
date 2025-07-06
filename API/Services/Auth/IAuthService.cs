@@ -4,9 +4,8 @@ using API.Models.Auth;
 
 public interface IAuthService
 {
-    Task<string?> LoginAsync(LoginRequest request);
-    Task<AuthResult> RegisterAsync(RegisterRequest request);
-    Task<AuthResult> RefreshTokenAsync(string token);
-    Task LogoutAsync(string token);
-    Task<bool> ValidateTokenAsync(string token);
+    Task<TokenPair?> LoginAsync(LoginRequest request);
+    Task<TokenPair?> RegisterAsync(RegisterRequest request);
+    Task<bool> UpdatePasswordAsync(UpdatePasswordRequest request, int userId);
+    Task<bool> LogoutAsync(int userId, string refreshToken);
 }

@@ -4,30 +4,24 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using BCrypt.Net;
 
-static class AdminSeeder
+internal static class AdminSeeder
 {
     public static async Task SeedAsync(WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
+        app.Logger.LogInformation("Seeding admin user in development environment.");
+        
+        IConfiguration config = app.Services.GetRequiredService<IConfiguration>();
+        string? connStr = config.GetConnectionString("Default");
+
+        if (string.IsNullOrWhiteSpace(connStr))
         {
-            app.Logger.LogInformation("Seeding admin user in development environment.");
-            await SeedAdminUser(app);
+            app.Logger.LogError("Connection string 'Default' is not configured. Cannot seed admin user.");
+            return;
         }
-        else
-        {
-            app.Logger.LogInformation("Skipping admin user seed in production environment.");
-        }
-    }
 
-    private static async Task SeedAdminUser(WebApplication app)
-    {
-        var config = app.Services.GetRequiredService<IConfiguration>();
-        var connStr = config.GetConnectionString("Default");
-
-        var defaultEmail = "admin@example.com"; // You can env-var this too
-        var defaultUsername = "admin";
-
-        var rawPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
+        string defaultEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL") ?? "admin@example.com";
+        string defaultUsername = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin";
+        string? rawPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
 
         if (string.IsNullOrWhiteSpace(rawPassword))
         {
@@ -35,10 +29,10 @@ static class AdminSeeder
             return;
         }
 
-        using var conn = new SqlConnection(connStr);
+        await using SqlConnection conn = new(connStr);
         await conn.OpenAsync();
 
-        var existing = await conn.ExecuteScalarAsync<int>(
+        int existing = await conn.ExecuteScalarAsync<int>(
             "SELECT COUNT(1) FROM Users WHERE Email = @Email",
             new { Email = defaultEmail });
 
@@ -48,7 +42,7 @@ static class AdminSeeder
             return;
         }
 
-        var hash = BCrypt.Net.BCrypt.HashPassword(rawPassword);
+        string? hash = BCrypt.HashPassword(rawPassword);
 
         await conn.ExecuteAsync(
             "INSERT INTO Users (Username, Email, PasswordHash) VALUES (@Username, @Email, @PasswordHash)",

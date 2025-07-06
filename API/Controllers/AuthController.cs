@@ -1,29 +1,87 @@
 namespace API.Controllers;
 
-using API.Services.Auth;
-using API.Models.Auth;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity.Data;
+using Services.Auth;
+using Models.Auth;
+using Services.Token;
+using LoginRequest = Models.Auth.LoginRequest;
+using RegisterRequest = Models.Auth.RegisterRequest;
 
 public static class AuthController
 {
     public static void MapAuthEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/auth");
+        RouteGroupBuilder group = app.MapGroup("/auth");
 
         group.MapPost("/login", async (LoginRequest request, IAuthService authService) =>
         {
-            if (request.Email == null || request.Password == null)
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
             {
                 return Results.BadRequest("Email and Password are required.");
             }
 
-            string? token = await authService.LoginAsync(request);
+            TokenPair? tokens = await authService.LoginAsync(request);
 
-            if (token == null)
+            return tokens == null ?
+                Results.Unauthorized() :
+                Results.Ok(new { tokens });
+        });
+
+        group.MapPost("/register", async (RegisterRequest request, IAuthService authService) =>
+        {
+            if (string.IsNullOrWhiteSpace(request.Email) ||
+                string.IsNullOrWhiteSpace(request.Username) ||
+                string.IsNullOrWhiteSpace(request.Password) ||
+                string.IsNullOrWhiteSpace(request.ConfirmPassword))
             {
-                return Results.Unauthorized();
+                return Results.BadRequest("All fields are required.");
             }
 
-            return Results.Ok(new { token });
+            TokenPair? result = await authService.RegisterAsync(request);
+
+            return result == null ?
+                Results.Conflict("Email already taken.") :
+                Results.Ok(new { result });
         });
+
+        group.MapPut("/password", async (
+            UpdatePasswordRequest request,
+            ClaimsPrincipal user,
+            IAuthService authService
+        ) =>
+        {
+            int userId = int.Parse(
+                user.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                throw new InvalidOperationException("User ID not found in claims."));
+            
+            if (string.IsNullOrWhiteSpace(request.OldPassword) || string.IsNullOrWhiteSpace(request.NewPassword))
+                return Results.BadRequest("Old and new passwords are required.");
+            
+            bool success = await authService.UpdatePasswordAsync(request, userId);
+            return Results.Ok(new { success });
+        }).RequireAuthorization();
+
+        group.MapPost("/token/refresh", async (
+            RefreshRequest rr,
+            ITokenService tokenService) =>
+        {
+            TokenPair? tokens = await tokenService.RefreshTokensAsync(rr.RefreshToken);
+            return tokens is null ?
+                Results.Unauthorized() :
+                Results.Ok(tokens);
+        }).RequireAuthorization();
+        
+        group.MapPost("/auth/logout", async (
+            string refreshToken,
+            ClaimsPrincipal user,
+            IAuthService auth) =>
+        {
+            int userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                throw new InvalidOperationException("User ID not found in claims."));
+            bool result = await auth.LogoutAsync(userId, refreshToken);
+
+            return result ? Results.Ok() : Results.BadRequest("Invalid token.");
+        }).RequireAuthorization();
     }
 }

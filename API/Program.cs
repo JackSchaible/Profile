@@ -1,9 +1,12 @@
+using System.Text;
 using API.Controllers;
 using API.Seeds;
 using API.Services.Auth;
 using API.Services.Token;
+using API.Services.User;
+using Microsoft.IdentityModel.Tokens;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -12,12 +15,26 @@ builder.Services.AddControllers();
 // package will act as the webserver translating request and responses between the Lambda event source and ASP.NET Core.
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 builder.Services.AddSingleton(_ => Environment.GetEnvironmentVariable("SQL_CONNECTION_STRING") ?? throw new InvalidOperationException("SQL_CONNECTION_STRING environment variable is not set."));
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new InvalidOperationException("JWT_SECRET environment variable is not set."))),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 builder.Services.AddSingleton<ITokenService, TokenService>(sp =>
 {
-    var config = sp.GetRequiredService<IConfiguration>();
-    return new TokenService(config["JWT_SECRET"] ?? throw new InvalidOperationException("JWT_SECRET configuration is not set."));
+    IConfiguration config = sp.GetRequiredService<IConfiguration>();
+    return new TokenService(
+        config["JWT_SECRET"] ?? throw new InvalidOperationException("JWT_SECRET configuration is not set."),
+        config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set."));
 });
-builder.Services.AddScoped<IAuthService,AuthService>(sp =>
+builder.Services.AddScoped<IAuthService, AuthService>(sp =>
 {
     IConfiguration config = sp.GetRequiredService<IConfiguration>();
     ITokenService tokenService = sp.GetRequiredService<TokenService>();
@@ -25,9 +42,18 @@ builder.Services.AddScoped<IAuthService,AuthService>(sp =>
         config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set."),
         tokenService
     );
- });
+});
+builder.Services.AddScoped<IUserService, UserService>(sp =>
+{
+    IConfiguration config = sp.GetRequiredService<IConfiguration>();
+    ITokenService tokenService = sp.GetRequiredService<TokenService>();
+    return new UserService(
+        config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set."),
+        tokenService
+    );
+}); 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 
 app.UseHttpsRedirection();
@@ -35,6 +61,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapAuthEndpoints();
+app.MapUserEndpoints();
 
 await AdminSeeder.SeedAsync(app);
 
