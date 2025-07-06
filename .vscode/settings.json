@@ -1,0 +1,29 @@
+{
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": ".*\\.cs$",
+        "cmd": "dotnet format ${workspaceFolder}/API/API.csproj --include ${file}"
+      }
+    ]
+  },
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+
+  // ✅ Prettier for TypeScript
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  // ✅ Prettier for JavaScript too, while we're at it
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  // ❌ Disable built-in formatter for C#
+  "[csharp]": {
+    "editor.formatOnSave": false
+  }
+}
