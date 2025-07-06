@@ -97,10 +97,7 @@ export default function Home() {
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {group.items.map((item) => (
-                    <TechPill
-                      key={item}
-                      tech={item}
-                    />
+                    <TechPill key={item} tech={item} />
                   ))}
                 </div>
               </article>
@@ -120,25 +117,30 @@ export default function Home() {
             {projects.map((project) => (
               <article
                 key={project.title}
-                className="bg-card rounded-xl shadow-md border border-card p-6 max-w-sm w-full"
+                className="bg-card rounded-xl shadow-md border border-card p-6 max-w-sm w-full flex flex-col justify-between"
               >
-                <h3 className="font-bold text-lg mb-2 text-primary">
-                  {project.title}
-                </h3>
-                <p className="text-secondary text-sm mb-4">
-                  {project.description}
-                </p>
+                <div>
+                  <h3 className="font-bold text-lg mb-2 text-primary">
+                    {project.title}
+                  </h3>
+                  <p className="text-secondary text-sm mb-4">
+                    {project.description}
+                  </p>
+                </div>
+
                 <div className="flex gap-3">
-                  <a
-                    href={project.webLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-                    aria-label={`Visit ${project.title} website`}
-                  >
-                    <FontAwesomeIcon icon={faExternalLinkAlt} />
-                    Live Demo
-                  </a>
+                  {project.webLink != null && (
+                    <a
+                      href={project.webLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+                      aria-label={`Visit ${project.title} website`}
+                    >
+                      <FontAwesomeIcon icon={faExternalLinkAlt} />
+                      Live Demo
+                    </a>
+                  )}
                   <a
                     href={project.githubLink}
                     target="_blank"

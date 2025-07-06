@@ -24,17 +24,14 @@ const techStack = [
   },
   {
     category: "Cloud",
-    items: [
-      TechKey.AZURE,
-      TechKey.AWS,
-    ],
+    items: [TechKey.AZURE, TechKey.AWS],
   },
   {
     category: "DevOps",
     items: [
+      TechKey.AZURE_DEVOPS,
       TechKey.DOCKER,
       TechKey.GITHUB_ACTIONS,
-      TechKey.AZURE_DEVOPS,
       TechKey.KUBERNETES,
     ],
   },
