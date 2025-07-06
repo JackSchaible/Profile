@@ -1,6 +1,5 @@
 namespace API.Services.Token;
 
-using Microsoft.Data.SqlClient;
 using Models.Auth;
 using Models.Data;
 
@@ -9,7 +8,7 @@ public interface ITokenService
     /// <summary>
     /// Generates a JWT token for the given user ID.
     /// </summary>
-    /// <param name="userId">The ID of the user.</param>
+    /// <param name="user">The <see cref="User">user</see> to generate the token for.</param>
     /// <returns>A JWT token as a string.</returns>
     string GenerateToken(User user);
 

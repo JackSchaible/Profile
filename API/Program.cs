@@ -2,6 +2,7 @@ using System.Text;
 using API.Controllers;
 using API.Seeds;
 using API.Services.Auth;
+using API.Services.Post;
 using API.Services.Token;
 using API.Services.User;
 using Microsoft.IdentityModel.Tokens;
@@ -51,7 +52,14 @@ builder.Services.AddScoped<IUserService, UserService>(sp =>
         config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set."),
         tokenService
     );
-}); 
+});
+builder.Services.AddScoped<IPostService, PostService>(sp =>
+{
+    IConfiguration config = sp.GetRequiredService<IConfiguration>();
+    return new PostService(
+        config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set.")
+    );
+});
 
 WebApplication app = builder.Build();
 
@@ -62,6 +70,7 @@ app.MapControllers();
 
 app.MapAuthEndpoints();
 app.MapUserEndpoints();
+app.MapPostEndpoints();
 
 await AdminSeeder.SeedAsync(app);
 
