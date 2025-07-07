@@ -1,0 +1,7 @@
+C:\Users\jacks\dev\Profile\API\obj\Debug\net9.0\API.csproj.AssemblyReference.cache
+C:\Users\jacks\dev\Profile\API\obj\Debug\net9.0\API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jacks\dev\Profile\API\obj\Debug\net9.0\API.AssemblyInfoInputs.cache
+C:\Users\jacks\dev\Profile\API\obj\Debug\net9.0\API.AssemblyInfo.cs
+C:\Users\jacks\dev\Profile\API\obj\Debug\net9.0\API.csproj.CoreCompileInputs.cache
+C:\Users\jacks\dev\Profile\API\obj\Debug\net9.0\API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\jacks\dev\Profile\API\obj\Debug\net9.0\API.sourcelink.json
