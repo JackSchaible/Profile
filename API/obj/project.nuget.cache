@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3RRPhyDo/EU=",
+  "dgSpecHash": "/Z3yIgX6RQ4=",
   "success": true,
-  "projectFilePath": "c:\\Users\\jacks\\dev\\Profile\\API\\API.csproj",
+  "projectFilePath": "C:\\Users\\jacks\\dev\\Profile\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jacks\\.nuget\\packages\\amazon.lambda.apigatewayevents\\2.7.1\\amazon.lambda.apigatewayevents.2.7.1.nupkg.sha512",
     "C:\\Users\\jacks\\.nuget\\packages\\amazon.lambda.applicationloadbalancerevents\\2.2.0\\amazon.lambda.applicationloadbalancerevents.2.2.0.nupkg.sha512",

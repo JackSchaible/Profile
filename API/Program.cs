@@ -2,6 +2,7 @@ using System.Text;
 using API.Controllers;
 using API.Seeds;
 using API.Services.Auth;
+using API.Services.Comment;
 using API.Services.Post;
 using API.Services.Token;
 using API.Services.User;
@@ -60,6 +61,13 @@ builder.Services.AddScoped<IPostService, PostService>(sp =>
         config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set.")
     );
 });
+builder.Services.AddScoped<ICommentService, CommentService>(sp =>
+{
+    IConfiguration config = sp.GetRequiredService<IConfiguration>();
+    return new CommentService(
+        config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set.")
+    );
+});
 
 WebApplication app = builder.Build();
 
@@ -71,6 +79,7 @@ app.MapControllers();
 app.MapAuthEndpoints();
 app.MapUserEndpoints();
 app.MapPostEndpoints();
+app.MapCommentEndpoints();
 
 await AdminSeeder.SeedAsync(app);
 

@@ -4,6 +4,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Models;
 using Models.Data;
+using Models.Post;
 
 public class PostService(string connectionString) : IPostService
 {

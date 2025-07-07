@@ -1,4 +1,4 @@
-﻿namespace API.Models;
+﻿namespace API.Models.Post;
 
 public record PostItem(int id, string Title, string Slug, DateTime UpdatedAt);
 public record CreatePostRequest(string Title, string Content);

@@ -2,6 +2,7 @@
 
 using Models;
 using Models.Data;
+using Models.Post;
 
 public interface IPostService
 {

@@ -2,6 +2,7 @@
 
 using Models;
 using Models.Data;
+using Models.Post;
 using Services.Post;
 
 public static class PostController
