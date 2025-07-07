@@ -3,9 +3,8 @@
 using Amazon.S3;
 using Amazon.S3.Transfer;
 
-public class S3StorageService(IConfiguration config) : IStorageService
+public class S3StorageService(string bucketName) : IStorageService
 {
-    private readonly string _bucketName = config["AWS:BucketName"]!;
     private readonly IAmazonS3 _s3Client = new AmazonS3Client();
 
     public async Task<string> UploadFileAsync(Stream fileStream, string fileName, string contentType, string postSlug)
@@ -16,7 +15,7 @@ public class S3StorageService(IConfiguration config) : IStorageService
         {
             InputStream = fileStream,
             Key = key,
-            BucketName = _bucketName,
+            BucketName = bucketName,
             ContentType = contentType,
             CannedACL = S3CannedACL.PublicRead
         };
@@ -24,6 +23,6 @@ public class S3StorageService(IConfiguration config) : IStorageService
         TransferUtility fileTransferUtility = new TransferUtility(_s3Client);
         await fileTransferUtility.UploadAsync(uploadRequest);
 
-        return $"https://{_bucketName}.s3.amazonaws.com/{key}";
+        return $"https://{bucketName}.s3.amazonaws.com/{key}";
     }
 }
