@@ -5,6 +5,7 @@ using API.Models.Auth;
 using Models.Data;
 using Token;
 using Microsoft.Data.SqlClient;
+using System.Security.Claims;
 
 public class AuthService(string connectionString, ITokenService tokenService)
     : IAuthService
@@ -30,7 +31,7 @@ public class AuthService(string connectionString, ITokenService tokenService)
             "DELETE FROM [dbo].[RefreshTokens] WHERE [UserId] = @UserId AND [ExpiresAt] < @Now;",
             new { Now = DateTime.UtcNow, UserId = user.Id });
         
-        return await _tokenService.IssueTokens(user);
+        return await _tokenService.IssueTokens(user, IsAdmin(user.Email));
     }
 
     public async Task<TokenPair?> RegisterAsync(RegisterRequest request)
@@ -59,7 +60,7 @@ public class AuthService(string connectionString, ITokenService tokenService)
            VALUES (@Username, @Email, @PasswordHash, @CreatedAt);
         """, new { request.Email, request.Username, PasswordHash = passwordHash, CreatedAt = DateTime.UtcNow });
 
-        return await _tokenService.IssueTokens(new User(id, request.Username, request.Email, passwordHash, DateTime.UtcNow));
+        return await _tokenService.IssueTokens(new User(id, request.Username, request.Email, passwordHash, DateTime.UtcNow), false);
     }
 
     public async Task<bool> UpdatePasswordAsync(UpdatePasswordRequest request, int userId)
@@ -106,5 +107,21 @@ public class AuthService(string connectionString, ITokenService tokenService)
             new { UserId = userId, Now = DateTime.UtcNow });
             
         return false;
+    }
+
+    public bool IsAdmin(ClaimsPrincipal principal)
+    {
+        string? email = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (email is null)
+            return false;
+        
+        return IsAdmin(email);
+    }
+
+    public bool IsAdmin(string email)
+    {
+        string? adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
+        return adminEmail is not null || email == adminEmail;
     }
 }

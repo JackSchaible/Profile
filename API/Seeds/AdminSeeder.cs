@@ -16,8 +16,20 @@ internal static class AdminSeeder
 
         if (string.IsNullOrWhiteSpace(rawPassword))
         {
-            app.Logger.LogWarning("ADMIN_PASSWORD env var is not set. Skipping admin user seed.");
+            app.Logger.LogError("ADMIN_PASSWORD env var is not set. Skipping admin user seed.");
             return;
+        }
+
+        if (string.IsNullOrWhiteSpace(defaultEmail))
+        {
+            app.Logger.LogError("ADMIN_EMAIL env var is not set. Skipping admin user seed.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(defaultUsername))
+        {
+            app.Logger.LogWarning("ADMIN_USERNAME env var is not set. Using default 'admin'.");
+            defaultUsername = "admin";
         }
 
         await using SqlConnection conn = new(sqlConnectionString);

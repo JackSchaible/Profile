@@ -1,6 +1,7 @@
 ﻿namespace API.Controllers;
 
 using System.Security.Claims;
+using API.Services.Auth;
 using Models.Comment;
 using Services.Comment;
 
@@ -33,11 +34,10 @@ public static class CommentController
         group.MapDelete("/{commentId:int}", async (
             int commentId,
             ClaimsPrincipal user,
-            ICommentService commentService) =>
+            ICommentService commentService,
+            IAuthService authService) =>
         {
-            string? adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
-            if (adminEmail is null ||
-                user.FindFirst(ClaimTypes.Email)?.Value != adminEmail)
+            if (!authService.IsAdmin(user))
                 return Results.Forbid();
             
             bool deleted = await commentService.DeleteCommentAsync(commentId);

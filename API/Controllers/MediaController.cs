@@ -1,6 +1,7 @@
 ﻿namespace API.Controllers;
 
 using System.Security.Claims;
+using API.Services.Auth;
 using Services.MediaService;
 using Services.Post;
 
@@ -14,12 +15,11 @@ public static class MediaController
         group.MapPut("/upload", async (
             HttpContext context,
             IMediaService service,
+            IAuthService authService,
             IPostService postService,
             ClaimsPrincipal user) =>
         {
-            string? adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
-            if (adminEmail is null ||
-                user.FindFirst(ClaimTypes.Email)?.Value != adminEmail)
+            if (!authService.IsAdmin(user))
                 return Results.Forbid();
             
             IFormCollection form = await context.Request.ReadFormAsync();

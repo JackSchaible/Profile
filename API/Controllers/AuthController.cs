@@ -64,9 +64,13 @@ public static class AuthController
 
         group.MapPost("/token/refresh", async (
             RefreshRequest rr,
-            ITokenService tokenService) =>
+            ClaimsPrincipal user,
+            ITokenService tokenService,
+            IAuthService auth) =>
         {
-            TokenPair? tokens = await tokenService.RefreshTokensAsync(rr.RefreshToken);
+            TokenPair? tokens =
+                await tokenService.RefreshTokensAsync(rr.RefreshToken, auth.IsAdmin(user));
+                
             return tokens is null ?
                 Results.Unauthorized() :
                 Results.Ok(tokens);

@@ -1,11 +1,11 @@
+namespace API.Services.Token;
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-
-namespace API.Services.Token;
-
 using System.Security.Cryptography;
+using API.Services.Auth;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Models.Auth;
@@ -43,7 +43,7 @@ public class TokenService(string secretKey, string connectionString) : ITokenSer
         throw new NotImplementedException("Token validation is not implemented yet.");
     }
 
-    public async Task<TokenPair> IssueTokens(User user)
+    public async Task<TokenPair> IssueTokens(User user, bool isAdmin)
     {
         string token = GenerateToken(user);
         
@@ -66,10 +66,10 @@ public class TokenService(string secretKey, string connectionString) : ITokenSer
             }
         );
         
-        return new TokenPair(token, refreshToken);
+        return new TokenPair(token, refreshToken, isAdmin);
     }
 
-    public async Task<TokenPair?> RefreshTokensAsync(string refreshToken)
+    public async Task<TokenPair?> RefreshTokensAsync(string refreshToken, bool isAdmin)
     {
         string hash = Hash(refreshToken);
         await using SqlConnection conn = new(connectionString);
@@ -111,7 +111,7 @@ public class TokenService(string secretKey, string connectionString) : ITokenSer
             new { Hash = hash }
         );
         
-        return await IssueTokens(user);
+        return await IssueTokens(user, isAdmin);
     }
 
     private static (string, string, DateTime) GenerateRefreshToken(int days = 30)
