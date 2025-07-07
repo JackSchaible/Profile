@@ -37,11 +37,11 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddSingleton<ITokenService, TokenService>(sp => new TokenService(jwtSecret, sqlConnectionString));
 builder.Services.AddSingleton<IStorageService, S3StorageService>(sp => new S3StorageService(bucketName));
-builder.Services.AddScoped<IAuthService, AuthService>(sp => new AuthService(sqlConnectionString, sp.GetRequiredService<TokenService>()));
+builder.Services.AddScoped<IAuthService, AuthService>(sp => new AuthService(sqlConnectionString, sp.GetRequiredService<ITokenService>()));
 builder.Services.AddScoped<IUserService, UserService>(sp =>
 {
     IConfiguration config = sp.GetRequiredService<IConfiguration>();
-    ITokenService tokenService = sp.GetRequiredService<TokenService>();
+    ITokenService tokenService = sp.GetRequiredService<ITokenService>();
     return new UserService(sqlConnectionString, tokenService);
 });
 builder.Services.AddScoped<IPostService, PostService>(sp => new PostService(sqlConnectionString));
