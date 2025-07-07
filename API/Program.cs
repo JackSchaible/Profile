@@ -61,6 +61,6 @@ app.MapMediaEndpoints();
 
 app.MapGet("/ping", () => "PONG!");
 
-await AdminSeeder.SeedAsync(app);
+await AdminSeeder.SeedAsync(app, sqlConnectionString);
 
 app.Run();

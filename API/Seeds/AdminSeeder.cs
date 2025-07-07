@@ -6,19 +6,10 @@ using BCrypt.Net;
 
 internal static class AdminSeeder
 {
-    public static async Task SeedAsync(WebApplication app)
+    public static async Task SeedAsync(WebApplication app, string sqlConnectionString)
     {
         app.Logger.LogInformation("Seeding admin user in development environment.");
         
-        IConfiguration config = app.Services.GetRequiredService<IConfiguration>();
-        string? connStr = config.GetConnectionString("Default");
-
-        if (string.IsNullOrWhiteSpace(connStr))
-        {
-            app.Logger.LogError("Connection string 'Default' is not configured. Cannot seed admin user.");
-            return;
-        }
-
         string defaultEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL") ?? "admin@example.com";
         string defaultUsername = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin";
         string? rawPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
@@ -29,7 +20,7 @@ internal static class AdminSeeder
             return;
         }
 
-        await using SqlConnection conn = new(connStr);
+        await using SqlConnection conn = new(sqlConnectionString);
         await conn.OpenAsync();
 
         int existing = await conn.ExecuteScalarAsync<int>(
