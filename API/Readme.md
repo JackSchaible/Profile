@@ -1,51 +1,95 @@
-# ASP.NET Core Minimal API Serverless Application
+# Profile API – Minimal ASP.NET Core Serverless Backend
 
-This project shows how to run an ASP.NET Core Web API project as an AWS Lambda exposed through Amazon API Gateway. The NuGet package [Amazon.Lambda.AspNetCoreServer](https://www.nuget.org/packages/Amazon.Lambda.AspNetCoreServer) contains a Lambda function that is used to translate requests from API Gateway into the ASP.NET Core framework and then the responses from ASP.NET Core back to API Gateway.
+Welcome to the **Profile API**! This project is a modern, minimal ASP.NET Core Web API designed to run serverlessly on AWS Lambda, exposed via Amazon API Gateway. It powers the backend for my personal portfolio and projects, providing fast, scalable, and cost-effective APIs with zero server management.
 
+---
 
-For more information about how the Amazon.Lambda.AspNetCoreServer package works and how to extend its behavior view its [README](https://github.com/aws/aws-lambda-dotnet/blob/master/Libraries/src/Amazon.Lambda.AspNetCoreServer/README.md) file in GitHub.
+## 🚀 Features
 
-## Executable Assembly ##
+- **Minimal API**: Built with ASP.NET Core's latest minimal API syntax for simplicity and performance.
+- **Serverless**: Deploys as a Lambda function, scaling automatically with demand.
+- **API Gateway Integration**: Secure, public HTTP endpoints via Amazon API Gateway.
+- **CI/CD Ready**: Designed for automated deployment with AWS and GitHub Actions.
+- **CloudFormation Template**: Infrastructure-as-code for easy provisioning and updates.
+- **Extensible**: Add new endpoints or business logic with minimal ceremony.
 
-.NET Lambda projects that use C# top level statements like this project must be deployed as an executable assembly instead of a class library. To indicate to Lambda that the .NET function is an executable assembly the 
-Lambda function handler value is set to the .NET Assembly name. This is different then deploying as a class library where the function handler string includes the assembly, type and method name.
+---
 
-To deploy as an executable assembly the Lambda runtime client must be started to listen for incoming events to process. For an ASP.NET Core application the Lambda runtime client is started by included the
-`Amazon.Lambda.AspNetCoreServer.Hosting` NuGet package and calling `AddAWSLambdaHosting(LambdaEventSource.HttpApi)` passing in the event source while configuring the services of the application. The
-event source can be API Gateway REST API and HTTP API or Application Load Balancer.  
+## 🛠️ Project Structure
 
-### Project Files ###
+- `src/API/` – Main ASP.NET Core Minimal API project
+- `Controllers/` – Example and real API endpoints
+- `serverless.template` – AWS SAM/CloudFormation template for Lambda & API Gateway
+- `aws-lambda-tools-defaults.json` – Default deployment settings for AWS CLI/VS
+- `Program.cs` – App entry point and Lambda hosting configuration
+- `Profile.sln` – Visual Studio solution (now inside the `API/` folder)
 
-* serverless.template - an AWS CloudFormation Serverless Application Model template file for declaring your Serverless functions and other AWS resources
-* aws-lambda-tools-defaults.json - default argument settings for use with Visual Studio and command line deployment tools for AWS
-* Program.cs - entry point to the application that contains all of the top level statements initializing the ASP.NET Core application.
-The call to `AddAWSLambdaHosting` configures the application to work in Lambda when it detects Lambda is the executing environment. 
-* Controllers\CalculatorController - example Web API controller
+---
 
-You may also have a test project depending on the options selected.
+## 🏗️ Getting Started
 
-## Here are some steps to follow from Visual Studio:
+### Prerequisites
 
-To deploy your Serverless application, right click the project in Solution Explorer and select *Publish to AWS Lambda*.
+- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
+- AWS CLI configured with deploy permissions
+- (Optional) Visual Studio 2022+ for IDE support
 
-To view your deployed application open the Stack View window by double-clicking the stack name shown beneath the AWS CloudFormation node in the AWS Explorer tree. The Stack View also displays the root URL to your published application.
+### Local Development
 
-## Here are some steps to follow to get started from the command line:
+1. Clone the repo and open `API/Profile.sln` in Visual Studio or VS Code.
 
-Once you have edited your template and code you can deploy your application using the [Amazon.Lambda.Tools Global Tool](https://github.com/aws/aws-extensions-for-dotnet-cli#aws-lambda-amazonlambdatools) from the command line.
+2. Run locally:
 
-Install Amazon.Lambda.Tools Global Tools if not already installed.
-```
-    dotnet tool install -g Amazon.Lambda.Tools
-```
+   ```sh
+   cd API/src/API
+   dotnet run
+   ```
 
-If already installed check if new version is available.
-```
-    dotnet tool update -g Amazon.Lambda.Tools
-```
+3. Access the API at `https://localhost:5001` (or the port shown in the console).
 
-Deploy application
-```
-    cd "API/src/API"
-    dotnet lambda deploy-serverless
-```
+### Deploy to AWS Lambda
+
+1. Install the AWS Lambda .NET CLI tools (if not already):
+
+   ```sh
+   dotnet tool install -g Amazon.Lambda.Tools
+   ```
+
+2. Deploy from the command line:
+
+   ```sh
+   cd API/src/API
+   dotnet lambda deploy-serverless
+   ```
+
+3. Or, use **Publish to AWS Lambda** in Visual Studio.
+
+---
+
+## 📝 Example Endpoints
+
+- `GET /api/hello` – Sample endpoint (see `Controllers/CalculatorController`)
+- Add your own endpoints in the `Controllers/` folder or directly in `Program.cs` using minimal API syntax.
+
+---
+
+## 🤝 Contributing
+
+Pull requests and suggestions are welcome! If you spot a bug or want to add a feature, open an issue or PR.
+
+---
+
+## 📄 License
+
+MIT License. See [LICENSE](../LICENSE) for details.
+
+---
+
+## 👤 Author
+
+**Jack S.**  
+[Portfolio](https://your-portfolio-url.com) | [GitHub](https://github.com/your-github) | [LinkedIn](https://linkedin.com/in/your-linkedin)
+
+---
+
+_This project is part of my personal cloud-native portfolio stack. Built for learning, sharing, and real-world use._
