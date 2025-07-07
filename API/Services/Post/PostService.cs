@@ -105,6 +105,18 @@ public class PostService(string connectionString) : IPostService
         return rowsAffected > 0;
     }
 
+    public async Task<string> GetSlugForByIdAsync(int postId)
+    {
+        await using SqlConnection conn = new(connectionString);
+        return await conn.QuerySingleOrDefaultAsync<string>(
+            """
+            SELECT Slug
+            FROM [dbo].[Posts]
+            WHERE Id = @PostId;
+            """,
+            new { PostId = postId });
+    }
+
     private static string GenerateSlug(string title) => 
         title
             .ToLowerInvariant()

@@ -4,6 +4,7 @@ using API.Seeds;
 using API.Services.Auth;
 using API.Services.Comment;
 using API.Services.Post;
+using API.Services.Storage;
 using API.Services.Token;
 using API.Services.User;
 using Microsoft.IdentityModel.Tokens;
@@ -35,6 +36,11 @@ builder.Services.AddSingleton<ITokenService, TokenService>(sp =>
     return new TokenService(
         config["JWT_SECRET"] ?? throw new InvalidOperationException("JWT_SECRET configuration is not set."),
         config["SQL_CONNECTION_STRING"] ?? throw new InvalidOperationException("SQL_CONNECTION_STRING configuration is not set."));
+});
+builder.Services.AddSingleton<IStorageService, S3StorageService>(sp =>
+{
+    IConfiguration config = sp.GetRequiredService<IConfiguration>();
+    return new S3StorageService(config);
 });
 builder.Services.AddScoped<IAuthService, AuthService>(sp =>
 {
@@ -80,6 +86,7 @@ app.MapAuthEndpoints();
 app.MapUserEndpoints();
 app.MapPostEndpoints();
 app.MapCommentEndpoints();
+app.MapMediaEndpoints();
 
 await AdminSeeder.SeedAsync(app);
 

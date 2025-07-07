@@ -11,4 +11,5 @@ public interface IPostService
     Task<Post> CreateAsync(CreatePostRequest request);
     Task<Post?> UpdateAsync(int postId, UpdatePostRequest request);
     Task<bool> DeleteAsync(int postId);
+    Task<string> GetSlugForByIdAsync(int postId);
 }
