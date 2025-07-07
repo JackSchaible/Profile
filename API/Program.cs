@@ -66,3 +66,4 @@ app.MapGet("/ping", () => "PONG!");
 await AdminSeeder.SeedAsync(app, sqlConnectionString);
 
 app.Run();
+app.Logger.LogInformation("Profile Blog API started successfully.");
