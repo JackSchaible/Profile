@@ -88,6 +88,8 @@ app.MapPostEndpoints();
 app.MapCommentEndpoints();
 app.MapMediaEndpoints();
 
+app.MapGet("/ping", () => "PONG!");
+
 await AdminSeeder.SeedAsync(app);
 
 app.Run();
