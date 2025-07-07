@@ -1,47 +1,42 @@
-name: Deploy to GitHub Pages
+name: Deploy .NET Lambda
 
 on:
   push:
-    branches: [main]
-
-permissions:
-  contents: write
+    branches:
+      - main
+    paths:
+      - "API/**"
+      - ".github/workflows/deploy.yml"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
         with:
-          node-version: 18
+          dotnet-version: "8.0.x"
 
-      - name: Set up .npmrc for FontAwesome
+      - name: Install Lambda Tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+
+      - name: Add Lambda tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Restore
+        run: dotnet restore ./API/API.csproj
+
+      - name: Deploy to AWS Lambda
         run: |
-          echo "@awesome.me:registry=https://npm.fontawesome.com/" >> ~/.npmrc
-          echo "@fortawesome:registry=https://npm.fontawesome.com/" >> ~/.npmrc
-          echo "//npm.fontawesome.com/:_authToken=${{ secrets.FA }}" >> ~/.npmrc
-        working-directory: App
-
-      - name: Install dependencies
-        run: npm install
-        working-directory: App
-
-      - name: Build app
-        run: npm run build
-        working-directory: App
-
-      - name: Configure git user
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-
-      - name: Deploy to GitHub Pages
-        run: npm run deploy
+          dotnet lambda deploy-serverless \
+            --project-location ./API \
+            --stack-name ${{ secrets.AWS_STACK_NAME }} \
+            --region ${{ secrets.AWS_REGION }} \
+            --s3-bucket ${{ secrets.AWS_S3_BUCKET }}
         env:
-          GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
-        working-directory: App
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
