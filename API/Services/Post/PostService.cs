@@ -108,13 +108,15 @@ public class PostService(string connectionString) : IPostService
     public async Task<string> GetSlugForByIdAsync(int postId)
     {
         await using SqlConnection conn = new(connectionString);
-        return await conn.QuerySingleOrDefaultAsync<string>(
+        string? result = await conn.QuerySingleOrDefaultAsync<string>(
             """
             SELECT Slug
             FROM [dbo].[Posts]
             WHERE Id = @PostId;
             """,
             new { PostId = postId });
+        
+        return result ?? throw new KeyNotFoundException($"Post with ID {postId} not found.");
     }
 
     private static string GenerateSlug(string title) => 
