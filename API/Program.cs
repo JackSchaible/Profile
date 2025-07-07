@@ -49,6 +49,8 @@ builder.Services.AddScoped<ICommentService, CommentService>(sp => new CommentSer
 
 WebApplication app = builder.Build();
 
+app.Logger.LogInformation("Starting Profile Blog API...");
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
