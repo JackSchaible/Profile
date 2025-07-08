@@ -18,7 +18,7 @@ public class AuthService(string connectionString, ITokenService tokenService)
         await using SqlConnection conn = new(_connectionString);
         await conn.OpenAsync();
 
-        const string sql = "SELECT [Id], [Email], [Username], [PasswordHash], [CreatedAt] FROM [dbo].[Users] WHERE [Username] = @Username";
+        const string sql = "SELECT [Id], [Email], [Username], [PasswordHash], [CreatedAt] FROM [dbo].[Users] WHERE [Email] = @Email";
         User? user = await conn.QueryFirstOrDefaultAsync<User>(
             sql,
             new { request.Email }

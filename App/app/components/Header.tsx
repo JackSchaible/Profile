@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from 'react';
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faSun, faMoon, faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../providers/ThemeProvider";
+import { useAuth } from "../providers/AuthProvider";
+import LoginModal from "./LoginModal";
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -17,6 +20,12 @@ export default function Header({
   showNavigation = true,
 }: HeaderProps) {
   const { isDark, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   return (
     <header className="w-full">
@@ -68,22 +77,61 @@ export default function Header({
           <div className="flex-1" />
         )}
 
-        <div className="flex items-center gap-2">
-          <FontAwesomeIcon icon={faSun} className="w-5 h-5 text-yellow-500" />
-          <button
-            className="relative inline-flex h-6 w-11 items-center rounded-full bg-toggle transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            onClick={toggleTheme}
-            aria-label="Toggle dark mode"
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-toggle-slider transition-transform duration-200 ${
-                isDark ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button>
-          <FontAwesomeIcon icon={faMoon} className="w-5 h-5 text-blue-500" />
+        <div className="flex items-center gap-4">
+          {/* User Section */}
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-primary">
+                Welcome, {user.username}
+                {user.isAdmin && (
+                  <span className="ml-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                    Admin
+                  </span>
+                )}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-3 py-2 text-sm text-muted hover:text-primary transition-colors"
+                title="Logout"
+              >
+                <FontAwesomeIcon icon={faSignOutAlt} className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+            >
+              <FontAwesomeIcon icon={faUser} className="w-4 h-4" />
+              Login
+            </button>
+          )}
+          
+          {/* Theme Toggle */}
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon icon={faSun} className="w-5 h-5 text-yellow-500" />
+            <button
+              className="relative inline-flex h-6 w-11 items-center rounded-full bg-toggle transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={toggleTheme}
+              aria-label="Toggle dark mode"
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-toggle-slider transition-transform duration-200 ${
+                  isDark ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+            <FontAwesomeIcon icon={faMoon} className="w-5 h-5 text-blue-500" />
+          </div>
         </div>
       </nav>
+      
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </header>
   );
 }

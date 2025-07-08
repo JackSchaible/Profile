@@ -76,7 +76,7 @@ public static class AuthController
                 Results.Ok(tokens);
         }).RequireAuthorization();
         
-        group.MapPost("/auth/logout", async (
+        group.MapPost("/logout", async (
             string refreshToken,
             ClaimsPrincipal user,
             IAuthService auth) =>

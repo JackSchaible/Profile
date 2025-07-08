@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
-using API.Services.Auth;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Models.Auth;
