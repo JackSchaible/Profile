@@ -8,11 +8,23 @@ internal static class AdminSeeder
 {
     public static async Task SeedAsync(WebApplication app, string sqlConnectionString)
     {
+        IConfiguration config = app.Services.GetRequiredService<IConfiguration>();
         app.Logger.LogInformation("Seeding admin user in development environment.");
-        
-        string defaultEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL") ?? "admin@example.com";
-        string defaultUsername = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin";
-        string? rawPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
+    
+
+        string defaultEmail, defaultUsername, rawPassword;
+        if (app.Environment.IsDevelopment())
+        {
+            defaultEmail = config["Admin:Email"] ?? "admin@example.com";
+            defaultUsername = config["Admin:Username"] ?? "admin";
+            rawPassword = config["Admin:Password"] ?? string.Empty;
+        }
+        else
+        {
+            defaultEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL") ?? "admin@example.com";
+            defaultUsername = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin";
+            rawPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD") ?? string.Empty;
+        }
 
         if (string.IsNullOrWhiteSpace(rawPassword))
         {

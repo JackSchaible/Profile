@@ -18,9 +18,10 @@ builder.Services.AddControllers();
 // package will act as the webserver translating request and responses between the Lambda event source and ASP.NET Core.
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
-string jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new InvalidOperationException("JWT_SECRET environment variable is not set.");
-string sqlConnectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION_STRING") ?? throw new InvalidOperationException("SQL_CONNECTION_STRING environment variable is not set.");
-string bucketName = Environment.GetEnvironmentVariable("AWS_BUCKET_NAME") ?? throw new InvalidOperationException("AWS_BUCKET_NAME environment variable is not set.");
+
+string jwtSecret = builder.Configuration["Jwt:Secret"] ?? throw new InvalidOperationException("Jwt:Secret is not set in configuration.");
+string sqlConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("DefaultConnection connection string is not set in configuration.");
+string bucketName = builder.Configuration["AWS:BucketName"] ?? throw new InvalidOperationException("AWS:BucketName is not set in configuration.");
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
@@ -29,7 +30,7 @@ builder.Services.AddAuthentication("Bearer")
         {
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
-                    Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new InvalidOperationException("JWT_SECRET environment variable is not set."))),
+                    jwtSecret)),
             ValidateIssuer = false,
             ValidateAudience = false
         };

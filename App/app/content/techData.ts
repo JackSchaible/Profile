@@ -122,7 +122,7 @@ export const techLookup: Record<TechKey, TechData> = {
   },
   [TechKey.GRAPHQL]: {
     name: "GraphQL",
-    img: "/img/devops/docker.svg", // You might want to add a GraphQL icon
+    img: "/img/devops/docker.svg",
     color: "bg-pink-600",
   },
 };
