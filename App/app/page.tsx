@@ -69,7 +69,7 @@ export default function Home() {
                 GitHub
               </a>
               <a
-                href="/resume.pdf"
+                href="/doc/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors duration-200 font-medium"
