@@ -114,46 +114,48 @@ export default function Home() {
             Highlights
           </h2>
           <div className="flex flex-wrap justify-center gap-6">
-            {projects.map((project) => (
-              <article
-                key={project.title}
-                className="bg-card rounded-xl shadow-md border border-card p-6 max-w-sm w-full flex flex-col justify-between"
-              >
-                <div>
-                  <h3 className="font-bold text-lg mb-2 text-primary">
-                    {project.title}
-                  </h3>
-                  <p className="text-secondary text-sm mb-4">
-                    {project.description}
-                  </p>
-                </div>
+            {projects
+              .filter((p) => p.highlight)
+              .map((project) => (
+                <article
+                  key={project.title}
+                  className="bg-card rounded-xl shadow-md border border-card p-6 max-w-sm w-full flex flex-col justify-between"
+                >
+                  <div>
+                    <h3 className="font-bold text-lg mb-2 text-primary">
+                      {project.title}
+                    </h3>
+                    <p className="text-secondary text-sm mb-4">
+                      {project.description}
+                    </p>
+                  </div>
 
-                <div className="flex gap-3">
-                  {project.webLink != null && (
+                  <div className="flex gap-3">
+                    {project.webLink != null && (
+                      <a
+                        href={project.webLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+                        aria-label={`Visit ${project.title} website`}
+                      >
+                        <FontAwesomeIcon icon={faExternalLinkAlt} />
+                        Live Demo
+                      </a>
+                    )}
                     <a
-                      href={project.webLink}
+                      href={project.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-                      aria-label={`Visit ${project.title} website`}
+                      className="inline-flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+                      aria-label={`View ${project.title} source code`}
                     >
-                      <FontAwesomeIcon icon={faExternalLinkAlt} />
-                      Live Demo
+                      <FontAwesomeIcon icon={faGithub} />
+                      GitHub
                     </a>
-                  )}
-                  <a
-                    href={project.githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-                    aria-label={`View ${project.title} source code`}
-                  >
-                    <FontAwesomeIcon icon={faGithub} />
-                    GitHub
-                  </a>
-                </div>
-              </article>
-            ))}
+                  </div>
+                </article>
+              ))}
           </div>
         </section>
       </main>
