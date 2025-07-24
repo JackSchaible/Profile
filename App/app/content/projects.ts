@@ -14,6 +14,13 @@ const projects = [
     webLink: "https://glyphs.jackschaible.ca",
   },
   {
+    title: "Contact Manager",
+    description:
+      "A full-stack contact management application built with Vue and .NET Core. Deployed on AWS with a comprehensive CI/CD pipeline utilizing ECS/Fargate, Amplify, and a full suite of cloud services.",
+    githubLink: "https://github.com/JackSchaible/riva-test",
+    webLink: "https://riva.jackschaible.ca",
+  },
+  {
     title: "Saturn Recipe Editor",
     description:
       'This is a React + Electron app for editing and managing game-related data for my "Saturn" game project, featuring automatic file system synchronization and a supply chain SVG visualization tool.',
